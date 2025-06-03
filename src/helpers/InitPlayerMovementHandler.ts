@@ -26,10 +26,11 @@ export default function initPlayerMovementHandler(playerStore: PlayerState) {
         /* movement update commit */
         let v = new Vector2(0, 0);
 
-        if (heldKeys.has('w')) v.y = -1
-        if (heldKeys.has('s')) v.y = 1
-        if (heldKeys.has('a')) v.x = -1
-        if (heldKeys.has('d')) v.x = 1
+        /* movement cancel */
+        if (heldKeys.has('w') && !heldKeys.has('s')) v.y = -1
+        else if (heldKeys.has('s') && !heldKeys.has('w')) v.y = 1
+        if (heldKeys.has('a') && !heldKeys.has('d')) v.x = -1
+        else if (heldKeys.has('d') && !heldKeys.has('a')) v.x = 1
 
         if (v.length() !== 0) {
             v = v.normalized()
