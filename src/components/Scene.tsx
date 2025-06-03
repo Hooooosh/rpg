@@ -1,9 +1,10 @@
-import img from "../assets/freaquency.png"
+import { useState } from "react"
+import img from "../assets/images/freaquency.png"
 import { SpriteData } from "../constants/spriteData"
 import { useGameStore } from "../hooks/useGameData"
 import { usePlayerStore } from "../hooks/usePlayerData"
-import EntitySprite from "./EntitySprite"
 import PlayerSprite from "./PlayerSprite"
+import { eventHandler, GLOBAL_EVENTS } from "../helpers/EventHandler"
 
 export default function Scene() {
 
@@ -11,14 +12,22 @@ export default function Scene() {
     const location = useGameStore().currentScreenId
     const sprites = SpriteData[location]
 
-    const CAM_OFFSET_TOP = 510
-    const CAM_OFFSET_FORWARDS = 290
-    const CAM_PITCH = 103
+    const [updateCameraPosKey, setUpdateCameraPosKey] = useState(0)
+
+    const CAM_OFFSET_TOP = 620
+    const CAM_OFFSET_FORWARDS = 0
+    const CAM_PITCH = 97
     const CAM_PERSPECTIVE = 1300
+
+    eventHandler.on(GLOBAL_EVENTS.SCREEN_RESOLUTION_REFRESH, () => {
+        setUpdateCameraPosKey(updateCameraPosKey + 1)
+    })
 
     return (
         <div
-            className={`perspective-[${CAM_PERSPECTIVE}px] perspective-origin-center transform-3d`}
+            key={"update" + updateCameraPosKey}
+            style={{ perspective: CAM_PERSPECTIVE + "px" }}
+            className={`perspective-origin-center transform-3d`}
         >
             <div
                 className={`fixed w-[3000px] h-[2000px] origin-top transform-3d`}
@@ -32,9 +41,10 @@ export default function Scene() {
                         `
                 }}>
                 {
-                    sprites.map(sprite =>
-                        <EntitySprite position={sprite.position} img={sprite.img} scale={sprite.scale} />
-                    )
+                    /* sprites.map(sprite =>
+                        <EntitySprite position={sprite.position} img={sprite.img} scale={sprite.scale} onInteract={sprite.onInteract} centered={sprite.centered} />
+                    ) */
+                    ...sprites
                 }
                 <PlayerSprite />
             </div>

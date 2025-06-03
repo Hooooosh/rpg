@@ -5,7 +5,9 @@ export enum GLOBAL_EVENTS {
     TELEPORT,
     MOVE_START,
     MOVE_END,
+    MOVE,
     INTERACT,
+    SCREEN_RESOLUTION_REFRESH,
 }
 
 type EventHandlerFunction = (...args: unknown[]) => void;

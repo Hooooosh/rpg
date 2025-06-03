@@ -4,6 +4,7 @@ import KeyboardController from "../components/KeyboardController";
 import initPlayerMovementHandler from "../helpers/InitPlayerMovementHandler";
 import { usePlayerStore } from "../hooks/usePlayerData";
 import Scene from "../components/Scene";
+import initScreenResizeHandler from "../helpers/InitScreenResizeHandler";
 
 export default function GameScreen() {
 
@@ -11,6 +12,7 @@ export default function GameScreen() {
 
     useEffect(() => {
         initPlayerMovementHandler(player);
+        initScreenResizeHandler();
     }, [])
 
     return (
@@ -19,6 +21,6 @@ export default function GameScreen() {
             <HUD />
             <Scene />
         </>
-    )
+    ) 
 }
 

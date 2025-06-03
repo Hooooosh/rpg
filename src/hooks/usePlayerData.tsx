@@ -46,7 +46,6 @@ export const usePlayerStore = create<PlayerState>((set) => ({
             const _new = new Vector2(state.position.x, state.position.y)
             _new.x += v.x
             _new.y += v.y
-            console.log(_new)
             return { position: _new }
         })
     }

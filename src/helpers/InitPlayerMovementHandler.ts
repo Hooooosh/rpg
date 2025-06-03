@@ -7,7 +7,23 @@ import { eventHandler, GLOBAL_EVENTS } from "./EventHandler";
 export default function initPlayerMovementHandler(playerStore: PlayerState) {
     const heldKeys = new Set<string>();
 
+    const SPEED_MULTIPLIER = 12
+
+    let lastTime = performance.now()
+
     function update() {
+        /* DELTATIME update */
+        const currentTime = performance.now()
+        const dt = (currentTime - lastTime) / (1000/60)
+        lastTime = currentTime
+        
+        updatePlayerMovement(dt)
+
+        requestAnimationFrame(update)
+    }
+
+    function updatePlayerMovement(dt: number) {
+        /* movement update commit */
         let v = new Vector2(0, 0);
 
         if (heldKeys.has('w')) v.y = -1
@@ -18,7 +34,12 @@ export default function initPlayerMovementHandler(playerStore: PlayerState) {
         if (v.length() !== 0) {
             v = v.normalized()
 
-            playerStore.move(new Vector2(v.x * 5, v.y * 5));
+            playerStore.move(new Vector2(
+                v.x * SPEED_MULTIPLIER * dt,
+                v.y * SPEED_MULTIPLIER * dt
+            ));
+
+            eventHandler.emit(GLOBAL_EVENTS.MOVE)
         }
     }
 
@@ -29,9 +50,7 @@ export default function initPlayerMovementHandler(playerStore: PlayerState) {
         heldKeys.delete(key as string)
     })
 
-    setInterval(() => {
-        update()
-    }, 1000 / 60)
+    requestAnimationFrame(update)
 
     return null;
 }

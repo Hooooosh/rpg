@@ -1,4 +1,4 @@
-import img from "../assets/freaquency.png"
+import img from "../assets/images/freaquency.png"
 import { usePlayerStore } from "../hooks/usePlayerData"
 
 export default function PlayerSprite() {
@@ -15,7 +15,7 @@ export default function PlayerSprite() {
                 left: player.position.x + "px",
                 top: player.position.y + "px",
                 transformOrigin: "center bottom",
-                transform: `translateY(600px)  translateX(-50%) rotateX(-100deg)`,
+                transform: `translateX(-50%) translateY(-100%) rotateX(-100deg)`,
                 filter: "saturate(20) invert()"
             }}
         />

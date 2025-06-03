@@ -4,7 +4,6 @@ import { eventHandler, GLOBAL_EVENTS } from "../helpers/EventHandler";
 const MOVEMENT_KEYS = ['w', 'a', 's', 'd']
 
 export default function KeyboardController() {
-
     useEffect(() => {
         const keyDownHandler = (e: KeyboardEvent) => {
             if (e.repeat) return;
