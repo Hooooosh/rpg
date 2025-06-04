@@ -1,24 +1,14 @@
 import { useEffect } from "react";
-import { Vector3, type Vector2 } from "../interfaces/Globals";
 import { eventHandler, GLOBAL_EVENTS } from "../helpers/EventHandler";
+import { Vector3 } from "../helpers/Vector";
+import Text from "../gameObjectClasses/Text";
 
 
-export default function EntityText(
-    { position, text = "", fontSize = 10, onInteract, centered = false, isShown = true, maxWidth, background = false }:
-        {
-            position: Vector2 | Vector3,
-            text?: string,
-            fontSize?: number,
-            onInteract?: () => void,
-            centered?: boolean,
-            isShown?: boolean,
-            maxWidth?: number,
-            background?: boolean
-        }) {
+export default function TextElement({ text, isShown = true }: { text: Text, isShown?: boolean }) {
 
     useEffect(() => {
-        if (onInteract !== undefined) {
-            eventHandler.on(GLOBAL_EVENTS.INTERACT, onInteract)
+        if (text.onInteract !== undefined) {
+            eventHandler.on(GLOBAL_EVENTS.INTERACT, text.onInteract)
         }
     }, [])
 
@@ -26,16 +16,16 @@ export default function EntityText(
         <div
             className="transform-3d absolute"
             style={{
-                maxWidth: maxWidth,
-                left: position.x + "px",
-                fontSize: fontSize + "px",
-                top: position.y + "px",
+                maxWidth: Text.MAX_W,
+                left: text.position.x + "px",
+                top: -text.position.y + "px",
+                fontSize: Text.FONT_SIZE + "px",
                 transformOrigin: "bottom center",
-                transform: `translateY(-100%) ${centered ? "translateX(-50%)" : ""} rotateX(-100deg) ${position instanceof Vector3 ? `translateY(${position.z}px)` : ""}`,
+                transform: `translateY(-100%) ${text.centered ? "translateX(-50%)" : ""} rotateX(-100deg) ${text.position instanceof Vector3 ? `translateY(${text.position.z}px)` : ""}`,
             }}
         >
             {
-                background ?
+                text.hasBackground ?
                     <div className={`text-center border-2 border-neutral-300 bg-white rounded-lg py-4 px-5`}
                         style={{
                             animationDuration: "250ms",
@@ -44,7 +34,7 @@ export default function EntityText(
                             animationFillMode: "forwards",
                         }}
                     >
-                        {text}
+                        {text.text}
                         <div className="absolute bottom-0 w-10 aspect-square -z-10 left-1/2 border-2 border-neutral-300 bg-white rotate-45 -translate-x-1/2 translate-y-1/2" />
                         <div className="absolute bottom-0 w-16 h-10 -z-10 left-1/2 bg-white -translate-x-1/2 " />
                     </div>
@@ -59,7 +49,7 @@ export default function EntityText(
                             animationFillMode: "forwards",
                         }}
                     >
-                        {text}
+                        {text.text}
                     </div>
 
             }

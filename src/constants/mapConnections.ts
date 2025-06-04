@@ -1,4 +1,4 @@
-import { Vector2 } from "../interfaces/Globals"
+import { Vector2 } from "../helpers/Vector"
 import { Screens } from "./screens"
 
 type Connection = { id: Screens, position: Vector2 }

@@ -1,24 +1,28 @@
 import { create } from "zustand";
-import type { InventoryItem } from "../interfaces/Globals"
-import { Vector2 } from "../interfaces/Globals"
+import { type InventoryItem } from "../interfaces/Globals"
+import { Vector3 } from "../helpers/Vector";
 
 
 export type PlayerState = {
     health: number;
     maxHealth: number;
     baseAttack: number;
-    position: Vector2;
+    position: Vector3;
+    velocity: Vector3;
     inventory: InventoryItem[];
     takeDamage: (amount: number) => void;
     addItem: (id: number, amount?: number) => void;
-    move: (v: Vector2) => void;
+    move: (v: Vector3) => void;
 }
 
 export const usePlayerStore = create<PlayerState>((set) => ({
     health: 10,
     maxHealth: 10,
     baseAttack: 1,
-    position: new Vector2(0, 0),
+    position: new Vector3(0, 0, 0),
+    velocity: new Vector3(0, 0, 0),
+    maxVelocity: 10,
+
     inventory: [],
 
     takeDamage: (amount) => {
@@ -41,12 +45,20 @@ export const usePlayerStore = create<PlayerState>((set) => ({
         })
     },
 
-    move: (v: Vector2) => {
+    jump: () => {
         set((state) => {
-            const _new = new Vector2(state.position.x, state.position.y)
+            const _new = state.velocity
+            _new.z += 200
+            return { position: _new }
+        })
+    },
+
+    move: (v: Vector3) => {
+        set((state) => {
+            const _new = state.position
             _new.x += v.x
             _new.y += v.y
             return { position: _new }
         })
-    }
+    },
 }))

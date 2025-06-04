@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { MapConnectionData } from "../constants/mapConnections";
 import { Screens } from "../constants/screens";
 import { eventHandler, GLOBAL_EVENTS } from "../helpers/EventHandler";
-import { Vector2 } from "../interfaces/Globals";
+import { Vector2 } from "../helpers/Vector";
 
 
 type GameState = {

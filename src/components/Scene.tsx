@@ -1,5 +1,4 @@
 import { useState } from "react"
-import img from "../assets/images/freaquency.png"
 import { SpriteData } from "../constants/spriteData"
 import { useGameStore } from "../hooks/useGameData"
 import { usePlayerStore } from "../hooks/usePlayerData"
@@ -32,19 +31,18 @@ export default function Scene() {
             <div
                 className={`fixed w-[3000px] h-[2000px] origin-top transform-3d`}
                 style={{
-                    backgroundImage: `url(${img})`,
                     transform: `
                         rotateX(${CAM_PITCH}deg)
                         translateX(${-player.position.x + window.innerWidth / 2}px)
                         translateZ(${-CAM_OFFSET_TOP}px)
-                        translateY(${-CAM_OFFSET_FORWARDS + -player.position.y}px)
+                        translateY(${(CAM_OFFSET_FORWARDS + player.position.y)}px)
                         `
                 }}>
                 {
                     /* sprites.map(sprite =>
                         <EntitySprite position={sprite.position} img={sprite.img} scale={sprite.scale} onInteract={sprite.onInteract} centered={sprite.centered} />
                     ) */
-                    ...sprites
+                    sprites.map(e => e.GetElement())
                 }
                 <PlayerSprite />
             </div>

@@ -1,7 +1,7 @@
 
 import type { PlayerState } from "../hooks/usePlayerData";
-import { Vector2 } from "../interfaces/Globals";
 import { eventHandler, GLOBAL_EVENTS } from "./EventHandler";
+import { Vector2, Vector3 } from "./Vector";
 
 
 export default function initPlayerMovementHandler(playerStore: PlayerState) {
@@ -27,17 +27,18 @@ export default function initPlayerMovementHandler(playerStore: PlayerState) {
         let v = new Vector2(0, 0);
 
         /* movement cancel */
-        if (heldKeys.has('w') && !heldKeys.has('s')) v.y = -1
-        else if (heldKeys.has('s') && !heldKeys.has('w')) v.y = 1
-        if (heldKeys.has('a') && !heldKeys.has('d')) v.x = -1
-        else if (heldKeys.has('d') && !heldKeys.has('a')) v.x = 1
+        if (heldKeys.has('w') && !heldKeys.has('s')) v.y = 1
+        else if (heldKeys.has('s') && !heldKeys.has('w')) v.y = -1
+        if (heldKeys.has('d') && !heldKeys.has('a')) v.x = 1
+        else if (heldKeys.has('a') && !heldKeys.has('d')) v.x = -1
 
-        if (v.length() !== 0) {
-            v = v.normalized()
+        if (v.getMagnitude() !== 0) {
+            v = v.getNormalized()
 
-            playerStore.move(new Vector2(
+            playerStore.move(new Vector3(
                 v.x * SPEED_MULTIPLIER * dt,
-                v.y * SPEED_MULTIPLIER * dt
+                v.y * SPEED_MULTIPLIER * dt,
+                0
             ));
 
             eventHandler.emit(GLOBAL_EVENTS.MOVE)
